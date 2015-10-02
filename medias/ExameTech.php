@@ -21,7 +21,7 @@ class fromExameTech extends fromMedia {
      * @param int $stop
      * @return array
      */
-    public function getItens($stop = 10) {
+    public function getItens($stop = 10, $function = null) {
         $fn = function(&$item) {
             $aux = html_entity_decode($item['subtitulo']);
             $aux = strip_tags($aux, '<p></p>');

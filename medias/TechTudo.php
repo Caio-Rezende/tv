@@ -21,7 +21,7 @@ class fromTechTudo extends fromMedia {
      * @param int $stop
      * @return array
      */
-    public function getItens($stop = 10) {
+    public function getItens($stop = 10, $function = null) {
         $fn = function(&$item) {
             $item['ts']       = strtotime($item['datetime']);
             $item['datetime'] = date($this->patternDate, $item['ts']);
