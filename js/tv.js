@@ -88,18 +88,11 @@ var moduleTV = angular.module('tv', [])
         
         var lastArticle = $scope.lastArticle;
         if (lastArticle >= 0) {
-            articles[lastArticle].played = true;
+            articles[lastArticle].played = !articles[lastArticle].played;
             articles[lastArticle].destaque = false;
         }
         if (articles.length > 0) {
-            while (true) {
-                lastArticle = ((lastArticle + 1) % articles.length);
-                if (articles[lastArticle].played) {
-                    articles[lastArticle].played = false;
-                    continue;
-                }
-                break;
-            }
+            lastArticle = ((lastArticle + 1) % articles.length);
         }
         if (lastArticle >= 0) {
             $scope.destaque = articles[lastArticle];
