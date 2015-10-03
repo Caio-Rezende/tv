@@ -178,6 +178,7 @@ var moduleTV = angular.module('tv', [])
                 $scope.articles[$scope.lastArticle].played = true;
                 $scope.articles[$scope.lastArticle].destaque = false;
             }
+            $scope.changeIntervalProximoItem();
             $scope.lastArticle = index;
             article.destaque   = true;
             $scope.destaque    = article;

@@ -40,7 +40,8 @@
         </div>
         <center class="lista">
             <ul>
-                <li ng-repeat="article in articles" ng-class="{'destaque' : article.destaque, 'played' : article.played}" ng-click="trocarItem(article, $index);">
+                <li ng-repeat="article in articles" ng-class="{'destaque' : article.destaque, 'played' : article.played}" 
+                    ng-click="trocarItem(article, $index);">
                     <span class="datetime" style="float: right; font-size: 1.2em" ng-if="article.datetime">
                         {{article.datetime}}
                     </span>
