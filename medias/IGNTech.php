@@ -21,7 +21,7 @@ class fromIGNTech extends fromMedia {
      * @param int $stop
      * @return array
      */
-    public function getItens($stop = 10) {
+    public function getItens($stop = 10, $function = null) {
         $fn = function(&$item) {
             preg_match('~url\(\'([^\']+)\'\)~', $item['img'], $aux);
             $img = $aux[1];

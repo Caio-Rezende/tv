@@ -102,9 +102,11 @@ abstract class fromMedia {
     
     protected function save() {
         $this->lastTS = time();
-        file_put_contents($this->cacheFileName, json_encode(array(
-            'ts'    => $this->lastTS,
-            'itens' => $this->lastItens
-        )));
+        if(is_writable($this->cacheFileName)) {
+            file_put_contents($this->cacheFileName, json_encode(array(
+                'ts'    => $this->lastTS,
+                'itens' => $this->lastItens
+            )));
+        }
     }
 }

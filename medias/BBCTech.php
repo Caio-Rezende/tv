@@ -21,7 +21,7 @@ class fromBBCTech extends fromMedia {
      * @param int $stop
      * @return array
      */
-    public function getItens($stop = 10) {
+    public function getItens($stop = 10, $function = null) {
         $fn = function(&$item) {
             $item['href']     = str_replace('tag:', 'http://', $item['href']);
             $item['ts']       = strtotime($item['datetime']);
