@@ -22,10 +22,7 @@ class fromTechTudo extends fromMedia {
      * @return array
      */
     public function getItens($stop = 10, $function = null) {
-        $fn = function(&$item) {
-            $item['ts']       = strtotime($item['datetime']);
-            $item['datetime'] = date($this->patternDate, $item['ts']);
-        };
-        return parent::getItens($stop, $fn);
+        $function = null;
+        return parent::getItens($stop, $function);
     }
 }

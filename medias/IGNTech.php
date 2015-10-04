@@ -22,7 +22,7 @@ class fromIGNTech extends fromMedia {
      * @return array
      */
     public function getItens($stop = 10, $function = null) {
-        $fn = function(&$item) {
+        $function = function(&$item) {
             preg_match('~url\(\'([^\']+)\'\)~', $item['img'], $aux);
             $img = $aux[1];
             $img300 = str_replace('.150.', '.300.', $img);
@@ -37,10 +37,7 @@ class fromIGNTech extends fromMedia {
             $subtitulo = str_replace('Leia Mais', '', $item['subtitulo']);
             $subtitulo = explode("\n", $subtitulo);
             $item['subtitulo'] = $subtitulo[1];
-            
-            $item['ts']       = strtotime($item['datetime']);
-            $item['datetime'] = date($this->patternDate, $item['ts']);
         };
-        return parent::getItens($stop, $fn);
+        return parent::getItens($stop, $function);
     }
 }

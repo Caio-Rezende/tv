@@ -22,14 +22,12 @@ class fromExameTech extends fromMedia {
      * @return array
      */
     public function getItens($stop = 10, $function = null) {
-        $fn = function(&$item) {
+        $function = function(&$item) {
             $aux = html_entity_decode($item['subtitulo']);
             $aux = strip_tags($aux, '<p></p>');
             
             $item['subtitulo'] = str_replace(array('<p>', '</p>'), array(''), $aux);
-            $item['ts']        = strtotime($item['datetime']);
-            $item['datetime']  = date($this->patternDate, $item['ts']);
         };
-        return parent::getItens($stop, $fn);
+        return parent::getItens($stop, $function);
     }
 }

@@ -13,21 +13,24 @@ abstract class fromMedia {
     
     protected $patternDate = 'd/m/Y H:i';
     
-    protected $lastTS     = 0;
     protected $lastItens  = array();
     //segundos
-    protected $reloadTime = 5 * 60;
+    protected $lastTS     = 0;
+    protected $reloadTime = 0;
     
+    protected $cacheFolder   = '';
     protected $cacheFileName = '';
     protected $cacheFile     = null;
     
     public function __construct() {
-        $this->cacheFileName = '..' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . preg_replace('~[^\w]~', '_', $this->source);
+        $this->cacheFolder   = '..' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR;
+        $this->cacheFileName = $this->cacheFolder . preg_replace('~[^\w]~', '_', $this->source);
         
         if (file_exists($this->cacheFileName)) {
-            $this->cacheFile = json_decode(file_get_contents($this->cacheFileName), true);
-            $this->lastTS    = $this->cacheFile['ts'];
-            $this->lastItens = $this->cacheFile['itens'];
+            $this->cacheFile  = json_decode(file_get_contents($this->cacheFileName), true);
+            $this->lastTS     = $this->cacheFile['ts'];
+            $this->lastItens  = $this->cacheFile['itens'];
+            $this->reloadTime = $this->cacheFile['reloadTime'];
         }
     }
 
@@ -51,7 +54,9 @@ abstract class fromMedia {
         }
         $articles = $doc->getElementsByTagName($this->itemName['tagName']);
         
-        $this->lastItens = array();
+        $this->lastItens  = array();
+        $this->reloadTime = 0;
+        $weight = 0;
         foreach($articles as $article) {
             if (array_key_exists('class', $this->itemName) && $article->getAttribute('class') != $this->itemName['class']) {
                 continue;
@@ -70,9 +75,21 @@ abstract class fromMedia {
             if ($function) {
                 $function($item);
             }
+            $item['ts']       = strtotime($item['datetime']);
+            $item['datetime'] = date($this->patternDate, $item['ts']);
+            
+            if (count($this->lastItens) > 0) {
+                $weight += count($this->lastItens);
+                $diff = ($this->lastItens[count($this->lastItens) - 1]['ts'] - $item['ts']);
+                //With this sum of the elements all the times, so the first ones will be more weighted
+                $this->reloadTime += $diff;
+            }
             
             $this->lastItens[] = $item;
         }
+        
+        //With this division we make sure we have the weight average of the diffs
+        $this->reloadTime  = floatval($this->reloadTime / $weight);
         
         $this->save();
         return array_splice($this->lastItens, 0, $stop);
@@ -102,10 +119,11 @@ abstract class fromMedia {
     
     protected function save() {
         $this->lastTS = time();
-        if(is_writable($this->cacheFileName)) {
+        if (file_exists($this->cacheFileName) || is_writable($this->cacheFolder)) {
             file_put_contents($this->cacheFileName, json_encode(array(
-                'ts'    => $this->lastTS,
-                'itens' => $this->lastItens
+                'ts'         => $this->lastTS,
+                'itens'      => $this->lastItens,
+                'reloadTime' => $this->reloadTime
             )));
         }
     }

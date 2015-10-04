@@ -22,11 +22,9 @@ class fromBBCTech extends fromMedia {
      * @return array
      */
     public function getItens($stop = 10, $function = null) {
-        $fn = function(&$item) {
+        $function = function(&$item) {
             $item['href']     = str_replace('tag:', 'http://', $item['href']);
-            $item['ts']       = strtotime($item['datetime']);
-            $item['datetime'] = date($this->patternDate, $item['ts']);
         };
-        return parent::getItens($stop, $fn);
+        return parent::getItens($stop, $function);
     }
 }
