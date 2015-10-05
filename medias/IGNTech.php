@@ -25,12 +25,9 @@ class fromIGNTech extends fromMedia {
         $function = function(&$item) {
             preg_match('~url\(\'([^\']+)\'\)~', $item['img'], $aux);
             $img = $aux[1];
-            $img300 = str_replace('.150.', '.300.', $img);
-            if (strpos($item['img'], $img300) >= 0) {
-                $item['img'] = $img300;
-            } else {
-                $item['img'] = $img;
-            }
+            $img300 = str_replace('.150.', '.1280.', $img);
+            $item['thumbnail'] = $img;
+            $item['img'] = $img300;
             
             $item['titulo'] = strip_tags($item['titulo']);
             

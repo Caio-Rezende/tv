@@ -9,6 +9,7 @@ abstract class fromMedia {
     protected $titulo    = array();
     protected $subtitulo = array();
     protected $img       = array();
+    protected $thumbnail = array();
     protected $datetime  = array();
     
     public $patternDate = 'd/m/Y H:i';

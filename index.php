@@ -50,7 +50,7 @@
                         {{article.titulo}}
                     </h2>
                     <center ng-if="article.img">
-                        <img style="width:100%" src="{{article.img}}">
+                        <img style="width:100%" src="{{article.thumbnail ? article.thumbnail : article.img}}">
                     </center>
                 </li>
             </ul>
