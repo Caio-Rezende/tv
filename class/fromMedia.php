@@ -11,12 +11,12 @@ abstract class fromMedia {
     protected $img       = array();
     protected $datetime  = array();
     
-    protected $patternDate = 'd/m/Y H:i';
+    public $patternDate = 'd/m/Y H:i';
     
     protected $lastItens  = array();
     //segundos
-    protected $lastTS     = 0;
-    protected $reloadTime = 0;
+    public $lastTS     = 0;
+    public $reloadTime = 0;
     
     protected $cacheFolder   = '';
     protected $cacheFileName = '';

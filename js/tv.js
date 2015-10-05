@@ -134,6 +134,12 @@ var moduleTV = angular.module('tv', [])
                             if (!$scope.sources[i].color) {
                                 $scope.sources[i].color = $scope.colors[i % $scope.colors.length];
                             }
+                            if (!$scope.sources[i].lastDate) {
+                                $scope.sources[i].lastDate = sources[j].lastDate;
+                            }
+                            if (!$scope.sources[i].nextDate) {
+                                $scope.sources[i].nextDate = sources[j].nextDate;
+                            }
                             break;
                         }
                     }

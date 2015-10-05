@@ -57,11 +57,11 @@
         </center>
         <div class="configuracoes" ng-show="configuracoes == true">
             <ul>
-                <li ng-repeat="source in sources">
+                <li ng-repeat="source in sources" class="sourceBlock">
                     <label>
                         <input type="checkbox" ng-model="source.enabled"/>
                         <span class="colorBlock" ng-style="{'background-color' : getColor(source.source)}">&nbsp;</span>
-                        {{source.name}}
+                        {{source.name}} <span class="lastDate">{{source.lastDate}}</span><span class="nextDate">{{source.nextDate}}</span>
                     </label>
                 </li>
             </ul>

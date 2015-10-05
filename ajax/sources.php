@@ -11,9 +11,12 @@ foreach ($dir as $file) {
         include $dirname . DIRECTORY_SEPARATOR . $file;
         $className = 'from' . str_replace('.php', '', $file);
         $class = new $className();
+        /* @var $class fromMedia */
         $sources[] = array(
-            'name'   => str_replace('.php', '', $file),
-            'source' => $class->source
+            'name'     => str_replace('.php', '', $file),
+            'source'   => $class->source,
+            'lastDate' => date($class->patternDate, $class->lastTS),
+            'nextDate' => date($class->patternDate, $class->lastTS + $class->reloadTime)
         );
     }
 }
