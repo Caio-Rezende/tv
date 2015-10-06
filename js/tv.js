@@ -176,15 +176,11 @@ var moduleTV = angular.module('tv', ['ngSanitize'])
         
         var vezes = 0;
         $scope.avancarProximoItem = function() {
-            function continuar() {
-                vezes++;
-                processarArticles($scope);
-            }
             if (!(vezes % 5)) {
-                buscarMaisItens($scope).then(continuar);
-            } else {
-                continuar();
+                buscarMaisItens($scope);
             }
+            vezes++;
+            processarArticles($scope);
         };
         
         $scope.buscarMaisItens = function() {
