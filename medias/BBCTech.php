@@ -8,11 +8,12 @@ class fromBBCTech extends fromMedia {
         $this->source    = 'bbc.com';
         $this->src       = 'http://www.bbc.com/portuguese/topicos/ciencia_e_tecnologia/index.xml';
         $this->itemName  = array('tagName' => 'entry');
-        $this->href      = array('tagName' => 'id');
+        $this->href      = array('tagName' => 'link', 'attribute' => 'href');
         $this->img       = array('tagName' => 'img', 'attribute' => 'src');
         $this->titulo    = array('tagName' => 'title');
         $this->subtitulo = array('tagName' => 'summary');
         $this->datetime  = array('tagName' => 'updated');
+        $this->content   = array('tagName' => 'div', 'class' => 'column--primary');
         parent::__construct();
     }
     

@@ -47,14 +47,7 @@ abstract class fromMedia {
         if ($this->lastTS && count($this->lastItens) > 0 && $this->lastTS + $this->reloadTime > time()) {
             return $this->lastItens;
         }
-        $doc = new DOMDocument();
-        if ($this->isHtml) {
-            //ignorando warnings do parse
-            @$doc->loadHTMLFile($this->src);
-        } else {
-            //ignorando warnings do parse
-            @$doc->load($this->src);
-        }
+        $doc = $this->getDoc($this->src, $this->isHtml);
         $articles = $doc->getElementsByTagName($this->itemName['tagName']);
         
         $this->lastItens  = array();
@@ -98,24 +91,48 @@ abstract class fromMedia {
         return array_splice($this->lastItens, 0, $stop);
     }
     
+    /**
+     * 
+     * @param string $link
+     * @return string
+     */
     public function getContent($link) {
-        $doc = new DOMDocument();
-        if ($this->isHtml) {
-            //ignorando warnings do parse
-            @$doc->loadHTMLFile($link);
-        }
+        $doc = $this->getDoc($link);
         $html = $this->getInnerHTML($doc, $this->content);
+        
+        $this->debug($html, 'content');
+        
         $html = strip_tags($html, '<header></header><h1></h1><div></div><img><span></span><a></a><br><article></article><p></p><em></em>');
         return $html;
     }
     
+    /**
+     * 
+     * @param DOMDocument $doc
+     * @param array $aProperty
+     * @return string
+     */
     protected function getInnerHTML($doc, $aProperty) { 
         $tagName   = $aProperty['tagName'];
-        $attribute = (array_key_exists('attribute', $aProperty) ? $aProperty['attribute'] : false);
+        $class = (array_key_exists('class', $aProperty) ? $aProperty['class'] : false);
         
+        $node = null;
         $tag = $doc->getElementsByTagName($tagName);
-        if ($tag->length > 0) {
-            return $tag[0]->ownerDocument->saveXML($tag[0]); 
+        if ($class !== false) {
+            foreach ($tag as $node) {
+                if ($node->getAttribute('class') != $class) {
+                    continue;
+                }
+                break;
+            }
+        } else {
+            if ($tag->length > 0) {
+                $node = $tag[0];
+            }
+        }
+        if ($node !== null) {
+            $this->debug($node->ownerDocument->saveXML(), 'contentRaw');
+            return $node->ownerDocument->saveXML($node); 
         }
 
         return '';
@@ -123,7 +140,7 @@ abstract class fromMedia {
     
     /**
      * 
-     * @param DOMElement $article
+     * @param DOMNode $article
      * @param array $aProperty
      * @return mixed
      */
@@ -143,6 +160,9 @@ abstract class fromMedia {
         return $value;
     }
     
+    /**
+     * 
+     */
     protected function save() {
         $this->lastTS = time();
         if (file_exists($this->cacheFileName) || is_writable($this->cacheFolder)) {
@@ -152,5 +172,40 @@ abstract class fromMedia {
                 'reloadTime' => $this->reloadTime
             )));
         }
+    }
+    
+    /**
+     * 
+     * @param string $content
+     * @param string $name
+     */
+    private function debug($content, $name) {
+        $cacheFileName = $this->cacheFileName;
+        $cacheLastItens = $this->lastItens;
+        $this->cacheFileName = $this->cacheFolder . $name;
+        $this->lastItens = $content;
+        $this->save();
+        $this->cacheFileName = $cacheFileName;
+        $this->lastItens = $cacheLastItens;
+    }
+    
+    /**
+     * 
+     * @param string $link
+     * @param bool $isHTML
+     * @return DOMDocument
+     */
+    private function getDoc($link, $isHTML = true) {
+        ob_start();
+        $doc = new DOMDocument('1.0', 'utf-8');
+        if ($isHTML) {
+            //ignorando warnings do parse
+            $doc->loadHTMLFile($link);
+        } else {
+            //ignorando warnings do parse
+            $doc->load($link);
+        }
+        $this->debug(ob_get_clean(), 'getDoc');
+        return $doc;
     }
 }

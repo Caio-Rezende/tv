@@ -13,6 +13,7 @@ class fromExameTech extends fromMedia {
         $this->titulo    = array('tagName' => 'title');
         $this->subtitulo = array('tagName' => 'description');
         $this->datetime  = array('tagName' => 'pubDate');
+        $this->content   = array('tagName' => 'div', 'class' => 'main-container');
         parent::__construct();
     }
     

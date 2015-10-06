@@ -13,6 +13,7 @@ class fromIGNTech extends fromMedia {
         $this->titulo    = array('tagName' => 'h3');
         $this->subtitulo = array('tagName' => 'p');
         $this->datetime  = array('tagName' => 'time', 'attribute' => 'datetime');
+        $this->content   = array('tagName' => 'article');
         parent::__construct();
     }
     
