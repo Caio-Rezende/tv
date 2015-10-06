@@ -180,9 +180,11 @@ abstract class fromMedia {
      * @param string $name
      */
     private function debug($content, $name) {
+        $debugFolder = $this->cacheFolder   = '..' . DIRECTORY_SEPARATOR . 'debug' . DIRECTORY_SEPARATOR;
+        
         $cacheFileName = $this->cacheFileName;
         $cacheLastItens = $this->lastItens;
-        $this->cacheFileName = $this->cacheFolder . $name;
+        $this->cacheFileName = $debugFolder . $name;
         $this->lastItens = $content;
         $this->save();
         $this->cacheFileName = $cacheFileName;
