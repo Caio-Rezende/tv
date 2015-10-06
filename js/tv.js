@@ -1,4 +1,24 @@
-var moduleTV = angular.module('tv', [])
+var moduleTV = angular.module('tv', ['ngSanitize'])
+.factory('getContent', ['$http', '$q', function($http, $q){
+    return function(media, item) {
+        return $q(function(resolve, reject){
+            if (!item.href) {
+                reject();
+                return;
+            }
+            $http({
+                method: 'GET',
+                url: 'ajax/content.php',
+                params: {
+                    link: item.href,
+                    media: media
+                }
+            }).then(function (response) {
+                resolve(response.data);
+            });
+        });
+    };
+}])
 .factory('itemStorage', function(){
     return {
         getItem : function(nome, padrao) {
@@ -16,7 +36,7 @@ var moduleTV = angular.module('tv', [])
 })
 .factory('buscarSources', ['$http', '$q', function($http, $q){
     return function() {
-        var promise = $q(function(resolve){
+        return $q(function(resolve){
             $http({
                 method: 'GET',
                 url: 'ajax/sources.php'
@@ -24,7 +44,6 @@ var moduleTV = angular.module('tv', [])
                 resolve(response.data);
             });
         });
-        return promise;
     };
 }])
 .factory('buscarMaisItens', ['$http', '$q', function($http, $q){
@@ -57,7 +76,7 @@ var moduleTV = angular.module('tv', [])
             if (isNaN(parseInt(i)) || !$scope.sources[i].enabled) continue;
             sources.push($scope.sources[i].name);
         }
-        var promise = $q(function(resolve){
+        return $q(function(resolve){
             $http({
                 method: 'POST',
                 url: 'ajax/tv.php',
@@ -79,7 +98,6 @@ var moduleTV = angular.module('tv', [])
                 resolve();
             });
         });
-        return promise;
     };
 }])
 .factory('processarArticles', ['$q', function($q){
@@ -103,8 +121,8 @@ var moduleTV = angular.module('tv', [])
         $scope.lastArticle = lastArticle;
     };
 }])
-.controller('ArticlesDisplay', ['$scope', '$interval', 'processarArticles', 'buscarMaisItens', 'buscarSources', 'itemStorage', 
-    function($scope, $interval, processarArticles, buscarMaisItens, buscarSources, itemStorage){
+.controller('ArticlesDisplay', ['$scope', '$interval', 'processarArticles', 'buscarMaisItens', 'buscarSources', 'itemStorage', 'getContent',
+    function($scope, $interval, processarArticles, buscarMaisItens, buscarSources, itemStorage, getContent){
         $scope.colors      = ['#FF2626','#B300B3','#5B5BFF','#5EAE9E','#D9C400','#FFA04A','#C98A4B','#FF73B9','#A27AFE','#32DF00'];
         $scope.sources     = itemStorage.getItem('sources', []);
         $scope.articles    = [];
@@ -117,8 +135,7 @@ var moduleTV = angular.module('tv', [])
         
         var init = false;
         $scope.buscarSources = function() {
-            var promiseSources = buscarSources();
-            promiseSources.then(function(sources) {
+            buscarSources().then(function(sources) {
                 for (var j in sources) {
                     if (isNaN(parseInt(j, 10))) 
                         continue;
@@ -164,8 +181,7 @@ var moduleTV = angular.module('tv', [])
                 processarArticles($scope);
             }
             if (!(vezes % 5)) {
-                var promiseMais = buscarMaisItens($scope);
-                promiseMais.then(continuar);
+                buscarMaisItens($scope).then(continuar);
             } else {
                 continuar();
             }
@@ -193,17 +209,22 @@ var moduleTV = angular.module('tv', [])
             intervalProximoItem = $interval($scope.avancarProximoItem, $scope.avancarProximoItemTempo);
         };
         
-        $scope.getColor = function (source) {
-            var color = 'transparent';
+        $scope.getMediaAttr = function (source, attr, def) {
             for (var i in $scope.sources) {
                 if (isNaN(parseInt(i, 10)) 
                     || $scope.sources[i].source != source
                 ) {
                     continue;
                 }
-                color = $scope.sources[i].color;
+                return $scope.sources[i][attr];
             }
-            return color;
+            return def ? def : null;
+        };
+        
+        $scope.getContent = function(item) {
+            getContent($scope.getMediaAttr(item.source, 'name'), item).then(function (html){
+                $scope.content = html;
+            });
         };
 
         $interval($scope.buscarSources, 10 * 60 * 1000);

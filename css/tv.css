@@ -22,6 +22,25 @@ div.destaqueFundo {
     z-index: 0;
 }
 
+div.content {
+    background-color: white;
+    border: 5px solid gray;
+    box-shadow: 4px 4px 5px 5px rgba(0,0,0,0.4);
+    position: absolute;
+    left: 50px;
+    height: calc(100% - 100px);
+    overflow: auto;
+    padding: 10px;
+    top: 50px;
+    width: calc(100% - 110px);
+    z-index: 3;
+}
+div.content button{
+    position: fixed;
+    top: 65px;
+    right: 65px;
+}
+
 .lista {
     bottom: 10px; 
     display: block;

@@ -1,14 +1,14 @@
 <?php
-$dirname = '..' . DIRECTORY_SEPARATOR . 'medias' . DIRECTORY_SEPARATOR;
+include '../class/fromMedia.php';
+
 $dir = array();
-if (is_dir($dirname))
-    $dir = scandir($dirname);
+if (is_dir(MEDIA_DIR))
+    $dir = scandir(MEDIA_DIR);
 
 $sources = array();
-include '../class/fromMedia.php';
 foreach ($dir as $file) {
     if (strpos($file, '.php')) {
-        include $dirname . DIRECTORY_SEPARATOR . $file;
+        include MEDIA_DIR . DIRECTORY_SEPARATOR . $file;
         $className = 'from' . str_replace('.php', '', $file);
         $class = new $className();
         /* @var $class fromMedia */

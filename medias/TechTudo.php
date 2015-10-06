@@ -13,6 +13,7 @@ class fromTechTudo extends fromMedia {
         $this->titulo    = array('tagName' => 'h2');
         $this->subtitulo = array('tagName' => 'p');
         $this->datetime  = array('tagName' => 'time', 'attribute' => 'datetime');
+        $this->content   = array('tagName' => 'section');
         parent::__construct();
     }
     

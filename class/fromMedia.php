@@ -1,5 +1,6 @@
 <?php
 define('TV_MEDIA', true);
+define('MEDIA_DIR', __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'medias' . DIRECTORY_SEPARATOR);
 abstract class fromMedia {
     protected $isHtml    = false;
     public $source    = '';
@@ -11,6 +12,7 @@ abstract class fromMedia {
     protected $img       = array();
     protected $thumbnail = array();
     protected $datetime  = array();
+    protected $content   = array();
     
     public $patternDate = 'd/m/Y H:i';
     
@@ -95,6 +97,29 @@ abstract class fromMedia {
         $this->save();
         return array_splice($this->lastItens, 0, $stop);
     }
+    
+    public function getContent($link) {
+        $doc = new DOMDocument();
+        if ($this->isHtml) {
+            //ignorando warnings do parse
+            @$doc->loadHTMLFile($link);
+        }
+        $html = $this->getInnerHTML($doc, $this->content);
+        $html = strip_tags($html, '<header></header><h1></h1><div></div><img><span></span><a></a><br><article></article><p></p><em></em>');
+        return $html;
+    }
+    
+    protected function getInnerHTML($doc, $aProperty) { 
+        $tagName   = $aProperty['tagName'];
+        $attribute = (array_key_exists('attribute', $aProperty) ? $aProperty['attribute'] : false);
+        
+        $tag = $doc->getElementsByTagName($tagName);
+        if ($tag->length > 0) {
+            return $tag[0]->ownerDocument->saveXML($tag[0]); 
+        }
+
+        return '';
+    } 
     
     /**
      * 

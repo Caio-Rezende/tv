@@ -29,7 +29,7 @@ include_once '../class/fromMedia.php';
 
 $array = array();
 foreach ($sources as $source) {
-    $fileName = '..' . DIRECTORY_SEPARATOR . 'medias' . DIRECTORY_SEPARATOR . $source . '.php';
+    $fileName = MEDIA_DIR . $source . '.php';
     if (file_exists($fileName) === false) {
         continue;
     }

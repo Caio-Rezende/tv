@@ -4,6 +4,7 @@
         <title>TV</title>
         <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-sanitize.js"></script>
         <script src="js/tv.js"></script>
         <link type="text/css" rel="stylesheet" href="css/tv.css" media="all"/>
     </head>
@@ -23,6 +24,7 @@
                 {{destaque.subtitulo}}
             </h2>
             <a href="{{destaque.href}}" style="float: right" target="_blank">Link</a>
+            <span ng-click="getContent(destaque.href)" style="float: right" >Ver | </span>
         </div>
         <div ng-if="destaque" class="destaque">
             <span style="float: left" ng-if="destaque.source">
@@ -37,6 +39,12 @@
             <h2 ng-if="destaque.subtitulo">
                 {{destaque.subtitulo}}
             </h2>
+            <a href="{{destaque.href}}" style="float: right" target="_blank">Link</a>
+            <span ng-click="getContent(destaque)" style="float: right" >Ver | </span>
+        </div>
+        <div class="content" ng-show="content">
+            <button type="button" ng-click="content = ''">fechar</button>
+            <div ng-bind-html="content"></div>
         </div>
         <center class="lista">
             <ul>
@@ -46,7 +54,11 @@
                         {{article.datetime}}
                     </span>
                     <h2 ng-if="article.titulo">
-                        <span class="colorBlock" ng-style="{'background-color' : getColor(article.source)}">&nbsp;</span>
+                        <span class="colorBlock" 
+                              ng-style="{
+                                  'background-color' : getMediaAttr(article.source, 'color', 'transparent')
+                              }"
+                              >&nbsp;</span>
                         {{article.titulo}}
                     </h2>
                     <center ng-if="article.img">
@@ -60,7 +72,11 @@
                 <li ng-repeat="source in sources" class="sourceBlock">
                     <label>
                         <input type="checkbox" ng-model="source.enabled"/>
-                        <span class="colorBlock" ng-style="{'background-color' : getColor(source.source)}">&nbsp;</span>
+                        <span class="colorBlock" 
+                              ng-style="{
+                                'background-color' : getMediaAttr(source.source, 'color', 'transparent')
+                              }"
+                              >&nbsp;</span>
                         {{source.name}} <span class="lastDate">{{source.lastDate}}</span><span class="nextDate">{{source.nextDate}}</span>
                     </label>
                 </li>
