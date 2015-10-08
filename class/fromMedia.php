@@ -78,6 +78,10 @@ abstract class fromMedia {
             $item['ts']       = strtotime($item['datetime']);
             $item['datetime'] = date($this->patternDate, $item['ts']);
             
+            if (!$item['ts']) {
+                continue;
+            }
+            
             if (count($this->lastItens) > 0) {
                 $weight += count($this->lastItens);
                 $diff = ($this->lastItens[count($this->lastItens) - 1]['ts'] - $item['ts']);

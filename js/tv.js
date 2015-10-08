@@ -131,6 +131,7 @@ var moduleTV = angular.module('tv', ['ngSanitize'])
             lastArticle = ((lastArticle + 1) % articles.length);
         }
         if (lastArticle >= 0) {
+            console.log(new Date());
             $scope.destaque = articles[lastArticle];
             $scope.destaque.destaque = true;
         } else {
@@ -187,9 +188,9 @@ var moduleTV = angular.module('tv', ['ngSanitize'])
                 }
                 if (!init) {
                     intervalProximoItem = $interval($scope.avancarProximoItem, $scope.avancarProximoItemTempo);
+                    $scope.avancarProximoItem();
                     init = true;
                 }
-                $scope.buscarMaisItens();
             });
         };
         $scope.buscarSources();
@@ -209,11 +210,6 @@ var moduleTV = angular.module('tv', ['ngSanitize'])
                 processarArticles($scope);
             }
             vezes++;
-        };
-        
-        $scope.buscarMaisItens = function(forcar) {
-            vezes = 0;
-            $scope.avancarProximoItem(forcar);
         };
         
         $scope.trocarItem = function(article, index) {
