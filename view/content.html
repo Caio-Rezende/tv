@@ -1,0 +1,5 @@
+<img ng-show="destaque" src="{{destaque.img}}" class="contentDestaque">
+<div class="content" ng-show="$parent.content">
+    <button type="button" ng-click="$parent.content = ''">fechar</button>
+    <div ng-bind-html="$parent.content"></div>
+</div>

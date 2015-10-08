@@ -1,0 +1,17 @@
+<span style="float: left" ng-if="destaque.source">
+    {{destaque.source}}
+</span>
+<span style="float: right" ng-if="destaque.datetime">
+    {{destaque.datetime}}
+</span>
+<h1 ng-if="destaque.titulo">
+    {{destaque.titulo}}
+</h1>
+<h2 ng-if="destaque.subtitulo">
+    {{destaque.subtitulo}}
+</h2>
+<span style="float: right">
+    <a href="{{destaque.href}}">Link</a>
+    |
+    <a href="#{{destaque.href}}" ng-click="getContent(destaque)" target="_self">Ver</a>
+</span>

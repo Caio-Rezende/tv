@@ -1,0 +1,30 @@
+<div class="configuracoes" ng-show="configuracoes == true">    
+    <ul>
+        <li ng-repeat="source in sources" class="sourceBlock">
+            <label>
+                <input type="checkbox" ng-model="source.enabled"/>
+                <span class="colorBlock" 
+                      ng-style="{
+                        'background-color' : getMediaAttr(source.source, 'color', 'transparent')
+                      }"
+                      >&nbsp;</span>
+                {{source.name}} <span class="lastDate">{{source.lastDate}}</span><span class="nextDate">{{source.nextDate}}</span>
+            </label>
+        </li>
+    </ul>
+    <center>
+        <label><input type="checkbox" ng-model="$parent.listaExhibit" ng-change="toggleListaExhibit()">Exibir Lista Notícias?</label>
+        <br/>
+        <br/>
+        Velocidade de troca dos itens ({{$parent.avancarProximoItemTempo / 1000}}s):
+        <input type="range" max="60000" min="2500" step="500" ng-model="$parent.avancarProximoItemTempo"
+               ng-change="changeIntervalProximoItem()"/>
+        <button type="button" ng-click="buscarMaisItens()">Carregar Itens</button>
+        <button type="button" ng-click="buscarSources()">Carregar Fontes</button>
+        <br/>
+        <button type="button" ng-click="$parent.configuracoes = null;">Fechar</button>
+    </center>
+    <br/>
+</div>
+<img src="img/gear.svg" alt="Configurações" title="Configurações" class="gear"
+     ng-click="$parent.configuracoes = true;"/>

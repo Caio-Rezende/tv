@@ -100,8 +100,8 @@ var moduleTV = angular.module('tv', ['ngSanitize'])
         });
     };
 }])
-.factory('processarArticles', ['$q', function($q){
-    return function ($scope) {        
+.factory('processarArticles', function(){
+    return function ($scope) {
         var articles = $scope.articles;
         
         var lastArticle = $scope.lastArticle;
@@ -120,14 +120,15 @@ var moduleTV = angular.module('tv', ['ngSanitize'])
         }
         $scope.lastArticle = lastArticle;
     };
-}])
+})
 .controller('ArticlesDisplay', ['$scope', '$interval', 'processarArticles', 'buscarMaisItens', 'buscarSources', 'itemStorage', 'getContent',
     function($scope, $interval, processarArticles, buscarMaisItens, buscarSources, itemStorage, getContent){
-        $scope.colors      = ['#FF2626','#B300B3','#5B5BFF','#5EAE9E','#D9C400','#FFA04A','#C98A4B','#FF73B9','#A27AFE','#32DF00'];
-        $scope.sources     = itemStorage.getItem('sources', []);
-        $scope.articles    = [];
-        $scope.destaque    = null;
-        $scope.lastArticle = -1;
+        $scope.colors       = ['#FF2626','#B300B3','#5B5BFF','#5EAE9E','#D9C400','#FFA04A','#C98A4B','#FF73B9','#A27AFE','#32DF00'];
+        $scope.sources      = itemStorage.getItem('sources', []);
+        $scope.listaExhibit = itemStorage.getItem('listaExhibit', false);
+        $scope.articles     = [];
+        $scope.destaque     = null;
+        $scope.lastArticle  = -1;
         $scope.avancarProximoItemTempo = itemStorage.getItem('avancarProximoItemTempo', 10 * 1000);
         var intervalProximoItem = null;
         
@@ -177,10 +178,18 @@ var moduleTV = angular.module('tv', ['ngSanitize'])
         var vezes = 0;
         $scope.avancarProximoItem = function() {
             if (!(vezes % 5)) {
-                buscarMaisItens($scope);
+                buscarMaisItens($scope).then((function(size){
+                    return function() {
+                        if (size == 0) {
+                            $scope.avancarProximoItem();
+                        }
+                    };
+                })($scope.articles.length));
+            }
+            if ($scope.articles.length > 0) {
+                processarArticles($scope);
             }
             vezes++;
-            processarArticles($scope);
         };
         
         $scope.buscarMaisItens = function() {
@@ -189,7 +198,7 @@ var moduleTV = angular.module('tv', ['ngSanitize'])
         };
         
         $scope.trocarItem = function(article, index) {
-            if ($scope.lastArticle >= 0) {
+            if ($scope.lastArticle >= 0 && $scope.articles.length >= $scope.lastArticle) {
                 $scope.articles[$scope.lastArticle].played = true;
                 $scope.articles[$scope.lastArticle].destaque = false;
             }
@@ -221,6 +230,9 @@ var moduleTV = angular.module('tv', ['ngSanitize'])
             getContent($scope.getMediaAttr(item.source, 'name'), item).then(function (html){
                 $scope.content = html;
             });
+        };
+        $scope.toggleListaExhibit = function() {
+            itemStorage.setItem('listaExhibit', $scope.listaExhibit);
         };
 
         $interval($scope.buscarSources, 10 * 60 * 1000);
