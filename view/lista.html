@@ -1,19 +1,18 @@
-<center class="lista" ng-show="$parent.listaExhibit">
+<div class="lista" ng-show="$parent.listaExhibit">
     <ul>
         <li ng-repeat="article in articles" ng-style="{
                 'border-color' : getMediaAttr(article.source, 'color', 'transparent')
             }"
             ng-class="{'destaque' : article.destaque, 'played' : article.played}" 
             ng-click="trocarItem(article, $index);">
-            <span class="datetime" style="float: right; font-size: 1.2em" ng-if="article.datetime">
-                {{article.datetime}}
-            </span>
+            <img src="{{article.thumbnail ? article.thumbnail : article.img}}"
+                 ng-if="article.img">
             <h2 ng-if="article.titulo">
+                <span class="datetime" ng-if="article.datetime">
+                    {{article.datetime}}
+                </span>
                 {{article.titulo}}
             </h2>
-            <center ng-if="article.img">
-                <img style="width:100%" src="{{article.thumbnail ? article.thumbnail : article.img}}">
-            </center>
         </li>
     </ul>  
-</center>
+</div>

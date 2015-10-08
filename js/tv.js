@@ -123,12 +123,13 @@ var moduleTV = angular.module('tv', ['ngSanitize'])
 })
 .controller('ArticlesDisplay', ['$scope', '$interval', 'processarArticles', 'buscarMaisItens', 'buscarSources', 'itemStorage', 'getContent',
     function($scope, $interval, processarArticles, buscarMaisItens, buscarSources, itemStorage, getContent){
-        $scope.colors       = ['#FF2626','#B300B3','#5B5BFF','#5EAE9E','#D9C400','#FFA04A','#C98A4B','#FF73B9','#A27AFE','#32DF00'];
-        $scope.sources      = itemStorage.getItem('sources', []);
-        $scope.listaExhibit = itemStorage.getItem('listaExhibit', false);
-        $scope.articles     = [];
-        $scope.destaque     = null;
-        $scope.lastArticle  = -1;
+        $scope.colors        = ['#FF2626','#B300B3','#5B5BFF','#5EAE9E','#D9C400','#FFA04A','#C98A4B','#FF73B9','#A27AFE','#32DF00'];
+        $scope.sources       = itemStorage.getItem('sources', []);
+        $scope.listaExhibit  = itemStorage.getItem('listaExhibit', false);
+        $scope.articles      = [];
+        $scope.destaque      = null;
+        $scope.chosenArticle = null;
+        $scope.lastArticle   = -1;
         $scope.avancarProximoItemTempo = itemStorage.getItem('avancarProximoItemTempo', 10 * 1000);
         var intervalProximoItem = null;
         
@@ -227,9 +228,14 @@ var moduleTV = angular.module('tv', ['ngSanitize'])
         };
         
         $scope.getContent = function(item) {
-            getContent($scope.getMediaAttr(item.source, 'name'), item).then(function (html){
-                $scope.content = html;
-            });
+            if (item.content) {
+                $scope.chosenArticle = item;
+            } else {
+                getContent($scope.getMediaAttr(item.source, 'name'), item).then(function (html){
+                    $scope.chosenArticle = item;
+                    item.content = html;
+                });
+            }
         };
         $scope.toggleListaExhibit = function() {
             itemStorage.setItem('listaExhibit', $scope.listaExhibit);

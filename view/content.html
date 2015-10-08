@@ -1,5 +1,7 @@
 <img ng-show="destaque" src="{{destaque.img}}" class="contentDestaque">
-<div class="content" ng-show="$parent.content">
-    <button type="button" ng-click="$parent.content = ''">fechar</button>
-    <div ng-bind-html="$parent.content"></div>
+<div class="content" ng-show="$parent.chosenArticle.content" ng-style="{
+        'border-color' : getMediaAttr($parent.chosenArticle.source, 'color', 'transparent')
+    }">
+    <button type="button" ng-click="$parent.chosenArticle = null">fechar</button>
+    <div ng-bind-html="$parent.chosenArticle.content"></div>
 </div>
