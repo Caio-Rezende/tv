@@ -49,7 +49,13 @@ var moduleTV = angular.module('tv', ['ngSanitize'])
 .factory('buscarMaisItens', ['$http', '$q', function($http, $q){
     var hrefs = {};
     var sourcesAnterior = [];
-    return function($scope) {
+    var alreadyLoading = [];
+    return function($scope, forcar) {
+        if (alreadyLoading.length) {
+            return $q(function(resolve) {
+                alreadyLoading.push(resolve);
+            });
+        }
         if ($scope.sources.length != sourcesAnterior.length) {
             var sourcesChanged = true;
         } else {
@@ -71,18 +77,24 @@ var moduleTV = angular.module('tv', ['ngSanitize'])
             $scope.itemStorage.setItem('sources', $scope.sources);
         }
         var articles = $scope.articles;
+        var buscarSources = $scope.buscarSources;
         var sources  = [];
         for (var i in $scope.sources) {
             if (isNaN(parseInt(i)) || !$scope.sources[i].enabled) continue;
             sources.push($scope.sources[i].name);
         }
         return $q(function(resolve){
+            alreadyLoading.push(resolve);
+            var params = {
+                'sources[]' : sources
+            };
+            if (forcar) {
+                params.forcar = 1;
+            }
             $http({
                 method: 'POST',
                 url: 'ajax/tv.php',
-                params: {
-                    'sources[]' : sources
-                }
+                params: params
             }).then(function (response) {
                 var data = response.data;
                 for (var i in data) {
@@ -95,7 +107,13 @@ var moduleTV = angular.module('tv', ['ngSanitize'])
                 }
                 articles.sort(function(a, b){ return parseFloat(b.ts) - parseFloat(a.ts); });
                 articles.splice(10);
-                resolve();
+                var resolve;
+                while (resolve = alreadyLoading.pop()) {
+                    resolve();
+                }
+                if (forcar) {
+                    buscarSources();
+                }
             });
         });
     };
@@ -177,9 +195,9 @@ var moduleTV = angular.module('tv', ['ngSanitize'])
         $scope.buscarSources();
         
         var vezes = 0;
-        $scope.avancarProximoItem = function() {
+        $scope.avancarProximoItem = function(forcar) {
             if (!(vezes % 5)) {
-                buscarMaisItens($scope).then((function(size){
+                buscarMaisItens($scope, forcar).then((function(size){
                     return function() {
                         if (size == 0) {
                             $scope.avancarProximoItem();
@@ -193,9 +211,9 @@ var moduleTV = angular.module('tv', ['ngSanitize'])
             vezes++;
         };
         
-        $scope.buscarMaisItens = function() {
+        $scope.buscarMaisItens = function(forcar) {
             vezes = 0;
-            $scope.avancarProximoItem();
+            $scope.avancarProximoItem(forcar);
         };
         
         $scope.trocarItem = function(article, index) {

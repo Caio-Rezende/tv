@@ -15,6 +15,11 @@ if (isset($_REQUEST)
     ) {
         $sources = $_REQUEST['sources'];
     }
+    if (array_key_exists('forcar', $_REQUEST)) {
+        $forcar = $_REQUEST['forcar'];
+    } else {
+        $forcar = false;
+    }
     
     if (array_key_exists('stop', $_REQUEST) 
         && intval($_REQUEST['stop']) == $_REQUEST['stop']
@@ -36,7 +41,10 @@ foreach ($sources as $source) {
     include_once $fileName;
     $source = 'from' . $source;
     $class = new $source();
-    /** @var $class fromMedia */
+    /**@var $class fromMedia */
+    if ($forcar) {
+        $class->lastTS = 0;
+    }
     $array = array_merge($array, $class->getItens());
 }
 
