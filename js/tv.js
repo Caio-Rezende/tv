@@ -131,7 +131,6 @@ var moduleTV = angular.module('tv', ['ngSanitize'])
             lastArticle = ((lastArticle + 1) % articles.length);
         }
         if (lastArticle >= 0) {
-            console.log(new Date());
             $scope.destaque = articles[lastArticle];
             $scope.destaque.destaque = true;
         } else {
