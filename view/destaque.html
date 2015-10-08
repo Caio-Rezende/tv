@@ -12,6 +12,8 @@
 </h2>
 <span style="float: right">
     <a href="{{destaque.href}}">Link</a>
-    |
-    <a href="#{{destaque.href}}" ng-click="getContent(destaque)" target="_self">Ver</a>
+    <span ng-show="destaque.allowContent">
+        |
+        <a href="#{{destaque.href}}" ng-click="getContent(destaque)" target="_self">Ver</a>
+    </span>
 </span>

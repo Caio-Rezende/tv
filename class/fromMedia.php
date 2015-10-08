@@ -2,17 +2,19 @@
 define('TV_MEDIA', true);
 define('MEDIA_DIR', __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'medias' . DIRECTORY_SEPARATOR);
 abstract class fromMedia {
-    protected $isHtml    = false;
-    public $source    = '';
-    protected $src       = '';
-    protected $itemName  = '';
-    protected $href      = array();
-    protected $titulo    = array();
-    protected $subtitulo = array();
-    protected $img       = array();
-    protected $thumbnail = array();
-    protected $datetime  = array();
-    protected $content   = array();
+    public $source = '';
+    
+    protected $src          = '';
+    protected $itemName     = '';
+    protected $isHtml       = false;
+    protected $allowContent = true;
+    protected $href         = array();
+    protected $titulo       = array();
+    protected $subtitulo    = array();
+    protected $img          = array();
+    protected $thumbnail    = array();
+    protected $datetime     = array();
+    protected $content      = array();
     
     public $patternDate = 'd/m/Y H:i';
     
@@ -54,18 +56,20 @@ abstract class fromMedia {
         $this->reloadTime = 0;
         $weight = 0;
         foreach($articles as $article) {
+            $this->debug($article->ownerDocument->saveXML(), 'feed');
             if (array_key_exists('class', $this->itemName) && $article->getAttribute('class') != $this->itemName['class']) {
                 continue;
             }
             
             /* @var $article DOMElement */
             $item = array(
-                'source'    => $this->source,
-                'href'      => $this->getValue($article, $this->href),
-                'img'       => $this->getValue($article, $this->img),
-                'titulo'    => $this->getValue($article, $this->titulo),
-                'subtitulo' => $this->getValue($article, $this->subtitulo),
-                'datetime'  => $this->getValue($article, $this->datetime)
+                'source'       => $this->source,
+                'href'         => $this->getValue($article, $this->href),
+                'img'          => $this->getValue($article, $this->img),
+                'titulo'       => $this->getValue($article, $this->titulo),
+                'subtitulo'    => $this->getValue($article, $this->subtitulo),
+                'datetime'     => $this->getValue($article, $this->datetime),
+                'allowContent' => $this->allowContent
             );
             
             if ($function) {
@@ -97,6 +101,9 @@ abstract class fromMedia {
      * @return string
      */
     public function getContent($link) {
+        if (!$this->allowContent) {
+            return '';
+        }
         $doc = $this->getDoc($link);
         $html = $this->getInnerHTML($doc, $this->content);
         
@@ -150,6 +157,9 @@ abstract class fromMedia {
         $attribute = (array_key_exists('attribute', $aProperty) ? $aProperty['attribute'] : false);
         
         $tag = $article->getElementsByTagName($tagName);
+        if (!$tag->length) {
+            $tag = $article->getElementsByTagName(strtolower($tagName));
+        }
         if ($tag->length) {
             if ($attribute) {
                 $value = $tag[0]->getAttribute($attribute);

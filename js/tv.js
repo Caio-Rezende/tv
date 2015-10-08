@@ -123,7 +123,7 @@ var moduleTV = angular.module('tv', ['ngSanitize'])
         var articles = $scope.articles;
         
         var lastArticle = $scope.lastArticle;
-        if (lastArticle >= 0) {
+        if (lastArticle >= 0 && articles[lastArticle]) {
             articles[lastArticle].played = !articles[lastArticle].played;
             articles[lastArticle].destaque = false;
         }
