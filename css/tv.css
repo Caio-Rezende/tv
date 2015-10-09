@@ -1,5 +1,10 @@
+@font-face{
+    font-family: Titillium;
+    src: url('../font/Titillium/Titillium-Thin.otf');
+}
+
 body {
-    font-family: sans-serif;
+    font-family: Titillium;
     margin: 0;
     padding: 0;
 }
@@ -14,25 +19,22 @@ a:hover, a:hover *{
 /****************************** highlight **************/
 .highlight {
     border-left: 15px solid black;
-    bottom: 50px;
     color: white;
-    margin: 0;
-    padding: 5px 15px;
-    position: absolute;
-    width: calc(100% - 45px);
     z-index: 1;
 }
 .highlightFundo {
     background-color: black;
+    color: black;
+    z-index: 0;
+}
+.highlight, .highlightFundo {
     border-left: 15px solid transparent;
     bottom: 50px;
-    color: black;
     margin: 0;
     opacity: .6;
     padding: 5px 15px;
     position: absolute;
     width: calc(100% - 45px);
-    z-index: 0;
 }
 
 /****************************** content **************/
@@ -163,10 +165,13 @@ a:hover, a:hover *{
 
 .gear{
     bottom: 10px;
-    height: 30px;
     position: absolute; 
     right: 10px; 
     z-index: 1;
+}
+.gear img {
+    float: left;
+    height: 30px;
 }
 
 /****************************** bar ****************/
@@ -181,14 +186,14 @@ a:hover, a:hover *{
 .bar .hora, .bar .clima{
     display: inline-block;
     line-height: 50px;
+    float: left;
     margin: 0;
     padding: 0;
-    position: absolute;
     top: 0;
     vertical-align: middle;
 }
-.clock {
+.clock, .climaIcon {
     float: left;
-    margin: 10px 10px 10px 40px;
-    width: 26px;
+    margin: 10px;
+    height: 26px;
 }

@@ -2,7 +2,10 @@
     <img src="img/clock.svg" class="clock"/>
     <span class="hora">
         {{hora}}
-        |
-        {{clima}}
+        &nbsp;&nbsp;|
+    </span>
+    <img ng-show="climaIcon" src="{{climaIcon}}" class="climaIcon"/>
+    <span class="clima">
+        {{climaTemp}}
     </span>
 </div>

@@ -159,6 +159,7 @@ var moduleTV = angular.module('tv', ['ngSanitize'])
         $scope.colors        = ['#FF2626','#B300B3','#5B5BFF','#5EAE9E','#D9C400','#FFA04A','#C98A4B','#FF73B9','#A27AFE','#32DF00'];
         $scope.sources       = itemStorage.getItem('sources', []);
         $scope.listaExhibit  = itemStorage.getItem('listaExhibit', false);
+        $scope.showSubtitle  = itemStorage.getItem('showSubtitle', false);
         $scope.articles      = [];
         $scope.destaque      = null;
         $scope.chosenArticle = null;
@@ -268,12 +269,16 @@ var moduleTV = angular.module('tv', ['ngSanitize'])
         $scope.toggleListaExhibit = function() {
             itemStorage.setItem('listaExhibit', $scope.listaExhibit);
         };
+        $scope.toggleShowSubtitle = function() {
+            itemStorage.setItem('showSubtitle', $scope.showSubtitle);
+        };
 
         $interval($scope.buscarSources, 10 * 60 * 1000);
     }])
     .controller('BarDisplay', ['$scope', '$interval', 'getWeather', function($scope, $interval, getWeather){
         $scope.hora = '00:00';
-        $scope.clima = '-º';
+        $scope.climaTemp = '-º';
+        $scope.climaIcon = '';
         
         function changeHora() {
             var data = new Date();
@@ -284,7 +289,8 @@ var moduleTV = angular.module('tv', ['ngSanitize'])
         
         function changeClima() {
             getWeather().then(function(res){
-                $scope.clima = res + ' ºC';
+                $scope.climaTemp = res.temp + ' ºC';
+                $scope.climaIcon = res.icon;
             });
         }
         $interval(changeClima, 15 * 60 * 1000);//the api.openweathermap free account only updates from 10 to 2h...

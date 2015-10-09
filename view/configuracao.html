@@ -17,6 +17,8 @@
     <center>
         <label><input type="checkbox" ng-model="$parent.listaExhibit" ng-change="toggleListaExhibit()">Exibir Lista Notícias?</label>
         <br/>
+        <label><input type="checkbox" ng-model="$parent.showSubtitle" ng-change="toggleShowSubtitle()">Exibir Resumo?</label>
+        <br/>
         <br/>
         Velocidade de troca dos itens ({{$parent.avancarProximoItemTempo / 1000}}s):
         <input type="range" max="60000" min="2500" step="500" ng-model="$parent.avancarProximoItemTempo"
@@ -26,5 +28,7 @@
     </center>
     <br/>
 </div>
-<img src="img/gear.svg" alt="Configurações" title="Configurações" class="gear"
-     ng-click="$parent.configuracoes = true;"/>
+<a href="#Configuration" target="_self" ng-click="$parent.configuracoes = true;" class="gear">
+    <img src="img/interagi.png" alt="Configurações" title="Configurações"/>
+    TV
+</a>

@@ -24,7 +24,7 @@ class fromTecmundo extends fromMedia {
      */
     public function getItens($stop = 10, $function = null) {
         $function = function(&$item) {
-            $item['subtitulo'] = html_entity_decode (strip_tags($item['subtitulo']));
+            $item['subtitulo'] = html_entity_decode(strip_tags($item['subtitulo']));
         };
         return parent::getItens($stop, $function);
     }
