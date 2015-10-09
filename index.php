@@ -19,5 +19,6 @@
              }"
              ></div>
         <div ng-include="'view/configuracao.html'"></div>
+        <div ng-include="'view/bar.html'"></div>
     </body>
 </html>

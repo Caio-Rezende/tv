@@ -1,4 +1,5 @@
 <div class="configuracoes" ng-show="configuracoes == true">    
+    <button type="button" class="close" ng-click="$parent.configuracoes = null;">Fechar</button>
     <ul>
         <li ng-repeat="source in sources" class="sourceBlock">
             <label>
@@ -22,8 +23,6 @@
                ng-change="changeIntervalProximoItem()"/>
         <button type="button" ng-click="buscarMaisItens(true)">Ignorar cache</button>
         <button type="button" ng-click="buscarSources()">Atualizar Fontes</button>
-        <br/>
-        <button type="button" ng-click="$parent.configuracoes = null;">Fechar</button>
     </center>
     <br/>
 </div>

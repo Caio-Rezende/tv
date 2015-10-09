@@ -2,6 +2,6 @@
 <div class="content" ng-show="$parent.chosenArticle.content" ng-style="{
         'border-color' : getMediaAttr($parent.chosenArticle.source, 'color', 'transparent')
     }">
-    <button type="button" ng-click="$parent.chosenArticle = null">fechar</button>
+    <button type="button" class="close" ng-click="$parent.chosenArticle = null">fechar</button>
     <div ng-bind-html="$parent.chosenArticle.content"></div>
 </div>

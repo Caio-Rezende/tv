@@ -1,4 +1,19 @@
 var moduleTV = angular.module('tv', ['ngSanitize'])
+.factory('getWeather', ['$http', '$q', function($http, $q){
+    return function() {
+        return $q(function(resolve, reject){
+            $http({
+                method: 'GET',
+                url: 'ajax/weather.php',
+                params: {
+                    
+                }
+            }).then(function (response) {
+                resolve(response.data);
+            });
+        });
+    };
+}])
 .factory('getContent', ['$http', '$q', function($http, $q){
     return function(media, item) {
         return $q(function(resolve, reject){
@@ -255,4 +270,23 @@ var moduleTV = angular.module('tv', ['ngSanitize'])
         };
 
         $interval($scope.buscarSources, 10 * 60 * 1000);
+    }])
+    .controller('BarDisplay', ['$scope', '$interval', 'getWeather', function($scope, $interval, getWeather){
+        $scope.hora = '00:00';
+        $scope.clima = '-º';
+        
+        function changeHora() {
+            var data = new Date();
+            $scope.hora = data.getHours() + ':' + data.getMinutes();
+        }
+        $interval(changeHora, 60 * 1000);
+        changeHora();
+        
+        function changeClima() {
+            getWeather().then(function(res){
+                $scope.clima = res + ' ºC';
+            });
+        }
+        $interval(changeClima, 60 * 1000);
+        changeClima();
     }]);

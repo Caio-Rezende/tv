@@ -3,16 +3,17 @@
         <li ng-repeat="article in articles" ng-style="{
                 'border-color' : getMediaAttr(article.source, 'color', 'transparent')
             }"
-            ng-class="{'destaque' : article.destaque, 'played' : article.played}" 
-            ng-click="trocarItem(article, $index);">
-            <img src="{{article.thumbnail ? article.thumbnail : article.img}}"
-                 ng-if="article.img">
-            <h2 ng-if="article.titulo">
-                <span class="datetime" ng-if="article.datetime">
-                    {{article.datetime}}
-                </span>
-                {{article.titulo}}
-            </h2>
+            ng-class="{'destaque' : article.destaque, 'played' : article.played}" >
+            <a href="#{{$index}}" ng-click="trocarItem(article, $index);">
+                <img src="{{article.thumbnail ? article.thumbnail : article.img}}"
+                     ng-if="article.img">
+                <h2 ng-if="article.titulo">
+                    <span class="datetime" ng-if="article.datetime">
+                        {{article.datetime}}
+                    </span>
+                    {{article.titulo}}
+                </h2>
+            </a>
         </li>
     </ul>  
 </div>

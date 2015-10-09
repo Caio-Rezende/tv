@@ -1,29 +1,41 @@
 body {
+    font-family: sans-serif;
     margin: 0;
     padding: 0;
 }
+
+a, a:hover, a:active, a:visited {
+    color: white;
+    text-decoration: none;
+}
+a:hover, a:hover *{
+    text-decoration: underline;
+}
+/****************************** highlight **************/
 .highlight {
     border-left: 15px solid black;
-    bottom: 40px;
-    margin: 0 35px 0 5px;
+    bottom: 50px;
+    color: white;
+    margin: 0;
     padding: 5px 15px;
     position: absolute;
-    max-width: calc(100% - 100px);
+    width: calc(100% - 45px);
     z-index: 1;
 }
 .highlightFundo {
-    background-color: white;
+    background-color: black;
     border-left: 15px solid transparent;
-    bottom: 40px;
-    color: white;
-    margin: 0 35px 0 5px;
+    bottom: 50px;
+    color: black;
+    margin: 0;
     opacity: .6;
     padding: 5px 15px;
     position: absolute;
-    max-width: calc(100% - 100px);
+    width: calc(100% - 45px);
     z-index: 0;
 }
 
+/****************************** content **************/
 .content {
     background-color: white;
     border: 5px solid gray;
@@ -37,10 +49,8 @@ body {
     width: calc(100% - 110px);
     z-index: 3;
 }
-.content button{
-    position: fixed;
-    top: 65px;
-    right: 65px;
+.close{
+    float: right;
 }
 .contentDestaque{
     height: 100%; 
@@ -51,6 +61,7 @@ body {
     z-index: -1;
 }
 
+/****************************** lista **************/
 .lista {
     display: block;
     height: 50%;
@@ -60,7 +71,8 @@ body {
     width: 207px;
 }
 .lista ul {
-    background-color: white;
+    background-color: black;
+    color: white;
     display: block;
     list-style-type: none;
     margin: 0;
@@ -108,10 +120,12 @@ body {
 .lista li.played {
 }
 
+/****************************** configuracoes **************/
 .configuracoes{
-    background-color: white;
+    background-color: black;
     border: 1px solid gray;
     box-shadow: 5px 5px 5px 5px rgba(0,0,0,0.4);
+    color: white;
     left: calc(50% - 150px);
     max-height: 300px;
     opacity: .8;
@@ -130,12 +144,6 @@ body {
 .configuracoes button{
     margin: 5px;
 }
-.gear{
-    bottom: 40px;
-    height: 30px;
-    position: absolute; 
-    right: 10px; 
-}
 
 .sourceBlock{
     margin: 5px 0;
@@ -148,6 +156,39 @@ body {
 .lastDate {
 }
 .nextDate {
-    color: green;
-    margin-top: 11px;
+    color: lightgreen;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.gear{
+    bottom: 10px;
+    height: 30px;
+    position: absolute; 
+    right: 10px; 
+    z-index: 1;
+}
+
+/****************************** bar ****************/
+.bar {
+    background: linear-gradient(to bottom, #666, #222, #000);
+    bottom: 0;
+    color: white;
+    height: 50px;
+    position: absolute;
+    width: 100%;
+}
+.bar .hora, .bar .clima{
+    display: inline-block;
+    line-height: 50px;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 0;
+    vertical-align: middle;
+}
+.clock {
+    float: left;
+    margin: 10px 10px 10px 40px;
+    width: 26px;
 }
