@@ -287,6 +287,6 @@ var moduleTV = angular.module('tv', ['ngSanitize'])
                 $scope.clima = res + ' ºC';
             });
         }
-        $interval(changeClima, 60 * 1000);
+        $interval(changeClima, 15 * 60 * 1000);//the api.openweathermap free account only updates from 10 to 2h...
         changeClima();
     }]);
