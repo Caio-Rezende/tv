@@ -7,4 +7,4 @@
 $weather = file_get_contents('http://api.openweathermap.org/data/2.5/find?q=Goiania&units=metric&APPID=');
 //$weather = file_get_contents('http://api.openweathermap.org/data/2.5/weather?lat=-16.681166&lon=-49.260369&units=metric');
 $weather = json_decode($weather, true);
-echo $weather['main']['temp'];
+echo $weather['list'][0]['main']['temp'];
