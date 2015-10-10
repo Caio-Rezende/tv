@@ -2,11 +2,11 @@
 if (defined('TV_MEDIA') === false) {
     die('Access Not Allower.');
 }
-class fromBBCTech extends fromMedia {
+class fromBBC extends fromMedia {
     public function __construct() {
         $this->isHtml    = false;
-        $this->source    = 'bbc.com/ciencia_e_tecnologia';
-        $this->src       = 'http://www.bbc.com/portuguese/topicos/ciencia_e_tecnologia/index.xml';
+        $this->source    = 'bbc.com';
+        $this->src       = 'http://www.bbc.com/portuguese/index.xml';
         $this->itemName  = array('tagName' => 'entry');
         $this->href      = array('tagName' => 'link', 'attribute' => 'href');
         $this->img       = array('tagName' => 'img', 'attribute' => 'src');

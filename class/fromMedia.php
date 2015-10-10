@@ -52,6 +52,7 @@ abstract class fromMedia {
         $doc = $this->getDoc($this->src, $this->isHtml);
         $articles = $doc->getElementsByTagName($this->itemName['tagName']);
         
+        $prevReloadTime   = $this->reloadTime;
         $this->lastItens  = array();
         $this->reloadTime = 0;
         $weight = 0;
@@ -92,8 +93,12 @@ abstract class fromMedia {
             $this->lastItens[] = $item;
         }
         
-        //With this division we make sure we have the weight average of the diffs
-        $this->reloadTime  = floatval($this->reloadTime / $weight);
+        if ($weight > 0) {
+            //With this division we make sure we have the weight average of the diffs
+            $this->reloadTime = floatval($this->reloadTime / $weight);
+        } else {
+            $this->reloadTime = ($prevReloadTime > 0 ? $prevReloadTime * 2 : 30);
+        }
         
         $this->save();
         return array_splice($this->lastItens, 0, $stop);
@@ -156,13 +161,26 @@ abstract class fromMedia {
      * @return mixed
      */
     protected function getValue($article, $aProperty) {
+        if (is_array($aProperty) === false) {
+            return '';
+        }
         $value = null;
         $tagName   = $aProperty['tagName'];
         $attribute = (array_key_exists('attribute', $aProperty) ? $aProperty['attribute'] : false);
+        $namespace = (array_key_exists('namespace', $aProperty) ? $aProperty['namespace'] : false);
         
-        $tag = $article->getElementsByTagName($tagName);
-        if (!$tag->length) {
-            $tag = $article->getElementsByTagName(strtolower($tagName));
+        if ($namespace) {
+            $tag = $article->getElementsByTagNameNS($tagName, $namespace);
+        } else {
+            $tag = $article->getElementsByTagName($tagName);
+        }
+        if ($tag->length == 0) {
+            $tagName = strtolower($tagName);
+            if ($namespace) {
+                $tag = $article->getElementsByTagNameNS($tagName, $namespace);
+            } else {
+                $tag = $article->getElementsByTagName($tagName);
+            }
         }
         if ($tag->length) {
             if ($attribute) {

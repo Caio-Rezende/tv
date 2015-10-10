@@ -100,36 +100,46 @@ var moduleTV = angular.module('tv', ['ngSanitize'])
         }
         return $q(function(resolve){
             alreadyLoading.push(resolve);
-            var params = {
-                'sources[]' : sources
-            };
-            if (forcar) {
-                params.forcar = 1;
-            }
-            $http({
-                method: 'POST',
-                url: 'ajax/tv.php',
-                params: params
-            }).then(function (response) {
-                var data = response.data;
-                for (var i in data) {
-                    if (isNaN(parseInt(i))) continue;
-                    var article = data[i];
-                    if (!hrefs[article.href]) {
-                        hrefs[article.href] = true;
-                        articles.push(article);
+            var length   = sources.length;
+            var answered = 0;
+            function answer() {
+                if (length == ++answered) {
+                    var resolve;
+                    while (resolve = alreadyLoading.pop()) {
+                        resolve();
+                    }
+                    if (forcar) {
+                        buscarSources();
                     }
                 }
-                articles.sort(function(a, b){ return parseFloat(b.ts) - parseFloat(a.ts); });
-                articles.splice(10);
-                var resolve;
-                while (resolve = alreadyLoading.pop()) {
-                    resolve();
-                }
+            }
+            for (var i in sources) {
+                if (isNaN(parseInt(i, 10))) continue;
+                var params = {
+                    'sources[]' : sources[i]
+                };
                 if (forcar) {
-                    buscarSources();
+                    params.forcar = 1;
                 }
-            });
+                $http({
+                    method: 'POST',
+                    url: 'ajax/tv.php',
+                    params: params
+                }).then(function (response) {
+                    var data = response.data;
+                    for (var i in data) {
+                        if (isNaN(parseInt(i))) continue;
+                        var article = data[i];
+                        if (!hrefs[article.href]) {
+                            hrefs[article.href] = true;
+                            articles.push(article);
+                        }
+                    }
+                    articles.sort(function(a, b){ return parseFloat(b.ts) - parseFloat(a.ts); });
+                    articles.splice(10);
+                    answer();
+                }, answer);
+            }
         });
     };
 }])

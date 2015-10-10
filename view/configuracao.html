@@ -1,7 +1,7 @@
 <div class="configuracoes" ng-show="configuracoes == true">    
     <button type="button" class="close" ng-click="$parent.configuracoes = null;">Fechar</button>
     <ul>
-        <li ng-repeat="source in sources" class="sourceBlock">
+        <li ng-repeat="source in sources | orderBy: 'name'" class="sourceBlock" ng-show="source.name">
             <label>
                 <input type="checkbox" ng-model="source.enabled" 
                     ng-change="buscarMaisItens()"/>
