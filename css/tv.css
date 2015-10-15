@@ -3,7 +3,13 @@
     src: url('../font/Titillium/Titillium-Thin.otf');
 }
 
+html {
+    height: 100%;
+    width: 100%;
+}
+
 body {
+    background: linear-gradient(to bottom, #666, #222, #000);
     font-family: Titillium;
     margin: 0;
     padding: 0;
@@ -196,4 +202,16 @@ a:hover, a:hover *{
     float: left;
     margin: 10px;
     height: 26px;
+}
+
+/****************************** bar ****************/
+.playButton, .pauseButton{
+    cursor: pointer;
+    font-size: 2em;
+    font-weight: bold;
+    left: 10px;
+    position: fixed;
+    text-shadow: 0.1em 0.1em 0.2em black;
+    top: 10px;
+    z-index: 2;
 }

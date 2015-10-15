@@ -1,4 +1,4 @@
-<div class="configuracoes" ng-show="configuracoes == true">    
+<div class="configuracoes" ng-show="$parent.configuracoes == true">    
     <button type="button" class="close" ng-click="$parent.configuracoes = null;">Fechar</button>
     <ul>
         <li ng-repeat="source in sources | orderBy: 'name'" class="sourceBlock" ng-show="source.name">
@@ -18,6 +18,8 @@
         <label><input type="checkbox" ng-model="$parent.listaExhibit" ng-change="toggleListaExhibit()">Exibir Lista Notícias?</label>
         <br/>
         <label><input type="checkbox" ng-model="$parent.showSubtitle" ng-change="toggleShowSubtitle()">Exibir Resumo?</label>
+        <br/>
+        <label><input type="checkbox" ng-model="$parent.playPauseExhibit" ng-change="togglePlayPauseExhibit()">Exibir Botão Play/Pause?</label>
         <br/>
         <br/>
         Velocidade de troca dos itens ({{$parent.avancarProximoItemTempo / 1000}}s):
