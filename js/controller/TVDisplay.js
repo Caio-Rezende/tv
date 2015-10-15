@@ -16,6 +16,7 @@ var TVDisplay = angular.module('TVDisplay', ['ajaxGetters', 'itemStorage', 'arti
         $scope.playFunction = function() {
             $scope.play  = false;
             $scope.pause = true;
+            $interval.cancel(intervalProximoItem);
             intervalProximoItem = $interval($scope.avancarProximoItem, $scope.avancarProximoItemTempo);
         };
         $scope.pauseFunction = function() {
@@ -62,6 +63,7 @@ var TVDisplay = angular.module('TVDisplay', ['ajaxGetters', 'itemStorage', 'arti
                     }
                 }
                 if (!init) {
+                    $interval.cancel(intervalProximoItem);
                     intervalProximoItem = $interval($scope.avancarProximoItem, $scope.avancarProximoItemTempo);
                     $scope.avancarProximoItem();
                     init = true;
