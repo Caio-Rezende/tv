@@ -101,9 +101,11 @@ var TVDisplay = angular.module('TVDisplay', ['ajaxGetters', 'itemStorage', 'arti
         };
         
         $scope.changeIntervalProximoItem = function() {
-            itemStorage.setItem('avancarProximoItemTempo', $scope.avancarProximoItemTempo);
-            $interval.cancel(intervalProximoItem);
-            intervalProximoItem = $interval($scope.avancarProximoItem, $scope.avancarProximoItemTempo);
+            if ($scope.pause) {
+                itemStorage.setItem('avancarProximoItemTempo', $scope.avancarProximoItemTempo);
+                $interval.cancel(intervalProximoItem);
+                intervalProximoItem = $interval($scope.avancarProximoItem, $scope.avancarProximoItemTempo);
+            }
         };
         
         $scope.getMediaAttr = function (source, attr, def) {
