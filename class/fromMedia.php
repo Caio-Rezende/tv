@@ -168,6 +168,7 @@ abstract class fromMedia {
         $tagName   = $aProperty['tagName'];
         $attribute = (array_key_exists('attribute', $aProperty) ? $aProperty['attribute'] : false);
         $namespace = (array_key_exists('namespace', $aProperty) ? $aProperty['namespace'] : false);
+        $hasAttribute = (array_key_exists('hasAttribute', $aProperty) ? $aProperty['hasAttribute'] : false);
         
         if ($namespace) {
             $tag = $article->getElementsByTagNameNS($tagName, $namespace);
@@ -183,10 +184,27 @@ abstract class fromMedia {
             }
         }
         if ($tag->length) {
-            if ($attribute) {
-                $value = $tag[0]->getAttribute($attribute);
+            $valueTag = null;
+            if ($hasAttribute) {
+                foreach ($tag as $auxTag) {
+                    /* @var $auxTag DOMNode */
+                    if ($auxTag->attributes->length > 0) {
+                        $node = $auxTag->attributes->getNamedItem($hasAttribute['name']);
+                        if ($node && (!array_key_exists('value', $hasAttribute) || $node->nodeValue == $hasAttribute['value'])) {
+                            $valueTag = $auxTag;
+                            break;
+                        }
+                    }
+                }
             } else {
-                $value = $tag[0]->nodeValue;
+                $valueTag = $tag[0];
+            }
+            if ($valueTag) {
+                if ($attribute) {
+                    $value = $valueTag->getAttribute($attribute);
+                } else {
+                    $value = $valueTag->nodeValue;
+                }
             }
         }
         return $value;
