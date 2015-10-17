@@ -10,11 +10,13 @@
         <script src="js/factory/itemStorage.js"></script>
         <script src="js/factory/articles.js"></script>
         <script src="js/controller/BarDisplay.js"></script>
+        <script src="js/controller/PublicityDisplay.js"></script>
         <script src="js/controller/TVDisplay.js"></script>
         <script src="js/tv.js"></script>
         <link type="text/css" rel="stylesheet" href="css/tv.css" media="all"/>
     </head>
     <body ng-app="tv" ng-controller="TVDisplay">
+        <div ng-include="'view/publicity.html'"></div>
         <a href="#paused" ng-click="pauseFunction()" 
             class="pauseButton" 
             ng-show="playPauseExhibit && pause"

@@ -215,3 +215,13 @@ a:hover, a:hover *{
     top: 10px;
     z-index: 2;
 }
+
+/****************************** publicity ********/
+.publicity {
+    position: fixed;
+    left: 0;
+    height: 100%;
+    top: 0;
+    width: 100%;
+    z-index: 4;
+}

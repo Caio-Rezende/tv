@@ -25,6 +25,14 @@
         Velocidade de troca dos itens ({{$parent.avancarProximoItemTempo / 1000}}s):
         <input type="range" max="60000" min="2500" step="500" ng-model="$parent.avancarProximoItemTempo"
                ng-change="changeIntervalProximoItem()"/>
+        <br/>
+        Velocidade para a próxima publicidade ({{timeToNextPublicity / 60000}}min):
+        <input type="range" max="600000" min="60000" step="60000" ng-model="timeToNextPublicity"
+               ng-change="setTimeoutNextPublicity()"/>
+        <br/>
+        Velocidade de troca dos itens ({{timeToHidePublicity / 1000}}s):
+        <input type="range" max="60000" min="10000" step="1000" ng-model="timeToHidePublicity"
+               ng-change="setTimeToHidePublicity()"/>
         <button type="button" ng-click="buscarMaisItens(true)">Ignorar cache</button>
         <button type="button" ng-click="buscarSources()">Atualizar Fontes</button>
     </center>

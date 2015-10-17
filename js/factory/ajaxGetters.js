@@ -24,6 +24,11 @@ var ajaxGetters = angular.module('ajaxGetters', [])
         return getAjax('ajax/sources.php');
     };
 }])
+.factory('getPublicity', ['getAjax', function(getAjax){
+    return function() {
+        return getAjax('ajax/publicity.php');
+    };
+}])
 .factory('getItens', ['getAjax', function(getAjax){
     return function(params) {
         return getAjax('ajax/tv.php', params);

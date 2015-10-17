@@ -1,1 +1,1 @@
-var moduleTV = angular.module('tv', ['ngSanitize', 'BarDisplay', 'TVDisplay']);
+var moduleTV = angular.module('tv', ['ngSanitize', 'BarDisplay', 'TVDisplay', 'PublicityDisplay']);
